@@ -9,8 +9,10 @@
 - Babel
 - CSS Modules
 - ESLint
+- stylelint
 - Flow
 - PostCSS
+- Jest
 
 ## Getting started
 

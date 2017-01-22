@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const StyleLintPlugin = require('stylelint-webpack-plugin')
 const pkg = require('./package.json')
 
 const PORT = process.env.PORT || 8080
@@ -25,6 +26,7 @@ const plugins = [
     },
   }),
   new HtmlWebpackPlugin(htmlWebpackPluginConfig),
+  new StyleLintPlugin({ syntax: 'sugarss' }),
 ]
 
 if (prod) {
@@ -43,26 +45,51 @@ if (prod) {
   )
 }
 
-const cssLoaderOptions = {
-  modules: true,
-  importLoaders: 1,
-  localIdentName: prod ? '[hash:base64:32]' : '[path][name]__[local]___[hash:base64:8]',
-  minimize: prod,
+const baseCSSLoaderOptions = { minimize: prod }
+
+const sssLoaderOptions = Object.assign(
+  {},
+  baseCSSLoaderOptions,
+  {
+    modules: true,
+    importLoaders: 1,
+    localIdentName: prod ? '[hash:base64:32]' : '[path][name]__[local]___[hash:base64:8]',
+  }
+)
+
+const sssRule = {}
+if (!prod) {
+  sssRule.use = [
+    'style-loader',
+    { loader: 'css-loader', options: sssLoaderOptions },
+    'postcss-loader',
+  ]
+} else {
+  sssRule.loader = ExtractTextPlugin.extract({
+    fallbackLoader: 'style-loader',
+    loader: [
+      `css-loader?${JSON.stringify(sssLoaderOptions)}`,
+      'postcss-loader',
+    ]
+  })
 }
+
+const cssLoaderOptions = Object.assign(
+  {},
+  baseCSSLoaderOptions
+)
 
 const cssRule = {}
 if (!prod) {
   cssRule.use = [
     'style-loader',
-    { loader: 'css-loader', options: cssLoaderOptions },
-    'postcss-loader',
+    { loader: 'css-loader', options: cssLoaderOptions }
   ]
 } else {
   cssRule.loader = ExtractTextPlugin.extract({
     fallbackLoader: 'style-loader',
     loader: [
       `css-loader?${JSON.stringify(cssLoaderOptions)}`,
-      'postcss-loader',
     ]
   })
 }
@@ -96,6 +123,10 @@ module.exports = {
       Object.assign(
         { test: /\.css$/ },
         cssRule
+      ),
+      Object.assign(
+        { test: /\.sss/ },
+        sssRule
       ),
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
