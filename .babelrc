@@ -1,0 +1,9 @@
+{
+  "presets": ["es2015", "es2016", "react"],
+  "plugins": ["transform-object-rest-spread", "transform-flow-strip-types", "transform-class-properties"],
+  "env": {
+    "development": {
+      "plugins": ["react-hot-loader/babel"]
+    }
+  }
+}
