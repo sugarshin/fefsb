@@ -12,7 +12,7 @@
 - stylelint
 - Flow
 - PostCSS
-- Jest
+- AVA
 
 ## Getting started
 
