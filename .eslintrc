@@ -1,12 +1,42 @@
 {
-  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:flowtype/recommended"],
-  "plugins": ["babel", "react", "flowtype"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:flowtype/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:ava/recommended",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "plugins": ["babel", "flowtype", "ava", "jsx-a11y", "security"],
   "parser": "babel-eslint",
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src"]
+      }
+    }
+  },
   "env": {
     "browser": true,
     "node": true
   },
   "rules": {
+    "babel/new-cap": 1,
+    "babel/no-await-in-loop": 1,
+    "babel/no-invalid-this": 1,
+    "security/detect-unsafe-regex": 1,
+    "security/detect-buffer-noassert": 1,
+    "security/detect-child-process": 1,
+    "security/detect-disable-mustache-escape": 1,
+    "security/detect-eval-with-expression": 1,
+    "security/detect-no-csrf-before-method-override": 1,
+    "security/detect-non-literal-fs-filename": 1,
+    "security/detect-non-literal-regexp": 1,
+    "security/detect-non-literal-require": 1,
+    "security/detect-object-injection": 1,
+    "security/detect-possible-timing-attacks": 1,
+    "security/detect-pseudoRandomBytes": 1,
     "no-console": 1,
     "semi": [2, "never"],
     "comma-dangle": [2, {

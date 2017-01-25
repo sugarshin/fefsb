@@ -2,8 +2,28 @@
   "presets": ["es2015", "es2016", "react"],
   "plugins": ["transform-object-rest-spread", "transform-flow-strip-types", "transform-class-properties"],
   "env": {
+    "production": {
+      "plugins": [[
+        "react-css-modules",
+        {
+          "generateScopedName": "[hash:base64:32]",
+          "filetypes": {
+            ".sss": "sugarss"
+          }
+        }
+      ]]
+    },
     "development": {
-      "plugins": ["react-hot-loader/babel"]
+      "plugins": ["react-hot-loader/babel", [
+        "react-css-modules",
+        {
+          "generateScopedName": "[path][name]__[local]___[hash:base64:8]",
+          "webpackHotModuleReloading": true,
+          "filetypes": {
+            ".sss": "sugarss"
+          }
+        }
+      ]]
     }
   }
 }
